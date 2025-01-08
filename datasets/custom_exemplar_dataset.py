@@ -143,10 +143,12 @@ class CustomDataset(BaseDataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         height, width = image.shape[:2]
         # read density
-        density_name = meta["density"]
-        density_path = os.path.join(self.density_dir, density_name)
-        density = np.load(density_path)
+        gt_num = len(meta["boxes"])
+        # density_name = meta["density"]
+        # density_path = os.path.join(self.density_dir, density_name)
+        # density = np.load(density_path)
         # transform
+        density = gt_num
         if self.transform_fn:
             image, density, _, _ = self.transform_fn(
                 image, density, [], [], (height, width)
@@ -162,7 +164,7 @@ class CustomDataset(BaseDataset):
             "height": height,
             "width": width,
             "image": image,
-            "density": density,
+            "density": gt_num,
             "exemplar_imgs": self.exemplar_imgs,
             "exemplar_boxes": self.exemplar_boxes,
         }

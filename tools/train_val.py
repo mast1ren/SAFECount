@@ -33,7 +33,7 @@ parser.add_argument(
 )
 parser.add_argument("-e", "--evaluate", action="store_true")
 parser.add_argument("-t", "--test", action="store_true")
-parser.add_argument("--local_rank", default=None, help="local rank for dist")
+parser.add_argument("--local-rank", default=None, help="local rank for dist")
 
 
 def main():
@@ -274,19 +274,20 @@ def eval(val_loader, model, criterion):
             sample = to_device(sample, device=torch.device("cuda"))
             outputs = model(sample)
             loss = 0
-            for name, criterion_loss in criterion.items():
-                weight = criterion_loss.weight
-                loss += weight * criterion_loss(outputs)
+            # for name, criterion_loss in criterion.items():
+            #     weight = criterion_loss.weight
+            #     loss += weight * criterion_loss(outputs)
 
             dump(config.evaluator.eval_dir, outputs)
 
-            density = outputs["density"]
+            # density = outputs["density"]
+            density = sample["density"]
             density_pred = outputs["density_pred"]
             pred_cnt = torch.sum(density_pred).item()
             gt_cnt = torch.sum(density).item()
 
-            if (args.evaluate or args.test) and config.get("visualizer", None):
-                visualizer.vis_batch(outputs)
+            # if (args.evaluate or args.test) and config.get("visualizer", None):
+            #     visualizer.vis_batch(outputs)
             logger.info(outputs["filename"])
             if rank == 0:
                 logger.info(

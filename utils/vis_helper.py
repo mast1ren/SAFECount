@@ -53,22 +53,22 @@ class Visualizer(ABC):
         image: tensor c x h x w
         """
         filepath = os.path.join(self.vis_dir, resname)
-        output = output.permute(1, 2, 0)  # c x h x w -> h x w x c
-        output = output.cpu().detach().numpy()
-        output = cv2.resize(output, (width, height))
-        if self.activation_fn:
-            output = self.activation_fn(output)
-        if self.normalization:
-            output = (output - output.min()) / (output.max() - output.min())
-        if self.with_image:
-            img_path = os.path.join(self.img_dir, filename)
-            image = cv2.imread(img_path)
-            image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-            output = self.apply_scoremap(image, output)
-            output = cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
-        else:
-            output = (output * 255).astype(np.uint8)
-        cv2.imwrite(filepath, output)
+        # output = output.permute(1, 2, 0)  # c x h x w -> h x w x c
+        # output = output.cpu().detach().numpy()
+        # output = cv2.resize(output, (width, height))
+        # if self.activation_fn:
+        #     output = self.activation_fn(output)
+        # if self.normalization:
+        #     output = (output - output.min()) / (output.max() - output.min())
+        # if self.with_image:
+        #     img_path = os.path.join(self.img_dir, filename)
+        #     image = cv2.imread(img_path)
+        #     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        #     output = self.apply_scoremap(image, output)
+        #     output = cv2.cvtColor(output, cv2.COLOR_RGB2BGR)
+        # else:
+        #     output = (output * 255).astype(np.uint8)
+        # cv2.imwrite(filepath, output)
 
     def vis_batch(self, input):
         filenames = input["filename"]
